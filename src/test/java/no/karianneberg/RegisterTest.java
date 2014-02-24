@@ -8,44 +8,47 @@ import static org.junit.Assert.assertThat;
 
 public class RegisterTest {
 
-    private static final Item PIZZA = new Item("Pizza", 20);
-    private static final Item ØL = new Item("Øl", 30);
+
+    public static final Item PIZZA = new Item("Pizza", 20);
+    public static final Item BEER = new Item("Beer", 30);
+
     private Register register;
 
     @Before
     public void setUp() throws Exception {
-        register = new Register(PIZZA, ØL);
+        register = new Register(PIZZA, BEER);
     }
 
     @Test
-    public void registerWithNoScannedItemsTotalsToZero() throws Exception {
-        assertThatTotalIs(0);
+    public void registerWithNoItemsScannedShouldTotalToZero() {
+        assertTotalPriceIs(0);
     }
 
     @Test
-    public void registerWithOneItemScannedShouldTotalToPriceOfThatItem() throws Exception {
+    public void registerWithOneItemScannedShouldTotalToItemPrice() {
         register.scan(PIZZA);
-        assertThatTotalIs(PIZZA.getPrice());
+
+        assertTotalPriceIs(PIZZA.getPrice());
     }
 
     @Test
-    public void registerWithTwoItemsScannedShouldTotalToSumOfPriceOfItems() throws Exception {
+    public void registerWithTwoScannedItemsShouldTotalToSumOfPriceOfItems() {
         register.scan(PIZZA);
-        register.scan(ØL);
+        register.scan(BEER);
 
-        assertThatTotalIs(PIZZA.getPrice() + ØL.getPrice());
+        assertTotalPriceIs(PIZZA.getPrice() + BEER.getPrice());
     }
 
     @Test
-    public void unknownItemsShouldNotAddToTotal() throws Exception {
-        register.scan(new Item("Unknown", 100));
+    public void registerShouldOnlyAddAllowedItemsToTotal() {
+        register.scan(new Item("Unknown", 1000));
 
-        assertThatTotalIs(0);
+        assertTotalPriceIs(0);
     }
 
-    private void assertThatTotalIs(int expectedPrice) {
+    private void assertTotalPriceIs(int price) {
         int totalPrice = register.getTotal();
-        assertThat(totalPrice, is(expectedPrice));
+        assertThat(totalPrice, is(price));
     }
 
 }

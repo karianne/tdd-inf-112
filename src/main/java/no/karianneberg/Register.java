@@ -1,10 +1,11 @@
 package no.karianneberg;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 
 public class Register {
 
-    private int total;
+    private int totalPrice;
     private List<Item> allowedItems;
 
     public Register(Item... allowedItems) {
@@ -12,12 +13,12 @@ public class Register {
     }
 
     public int getTotal() {
-        return total;
+        return totalPrice;
     }
 
     public void scan(Item item) {
         if (allowedItems.contains(item)) {
-            total += item.getPrice();
+            totalPrice += item.getPrice();
         }
     }
 }
